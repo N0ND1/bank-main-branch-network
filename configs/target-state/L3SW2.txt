@@ -1,0 +1,157 @@
+! L3SW2 (3650-24PS) - distribution, HSRP Standby - Bank Main Branch (Cisco Packet Tracer lab)
+! Source: Network Design Master Document Rev 1.0 (30 Sep 2026), Appendix A - TARGET STATE,
+! not a running-config export. Lines marked VERIFY use port IDs not confirmed in a live extract.
+! Built by: Nondumiso Mbuyazi (VLANs, trunks, SVIs, routed Po1) + Innocent (Nkosiyethu) Mbatha (HSRP, DHCP helpers, static routes)
+!
+! ----- base, VLANs, trunks, Po1 -----
+enable
+configure terminal
+hostname L3SW2
+ip routing
+!
+vlan 10
+ name MANAGEMENT
+vlan 20
+ name FINANCE
+vlan 30
+ name HR
+vlan 40
+ name IT
+vlan 50
+ name TELLERS
+vlan 60
+ name CUSTOMER_SERVICE
+vlan 70
+ name LOANS
+vlan 80
+ name SECURITY
+vlan 90
+ name STORAGE_SERVERS
+vlan 99
+ name NATIVE
+vlan 100
+ name GUEST
+!
+! Gi1/0/3 ASW1 | /4 ASW2 | /5 ASW3 | /6 ASW4 | /7 ASW5 | /8 ASW6
+interface range gigabitEthernet1/0/3 - 8
+ description DOWNLINK to ASW1-ASW6
+! skip the next line if the platform rejects it (dot1q only)
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,30,40,50,60,70,80,90,99,100
+ switchport nonegotiate
+ no shutdown
+!
+interface range gigabitEthernet1/0/23 - 24
+ description Po1 member to L3SW1
+ no switchport
+ channel-group 1 mode active
+ no shutdown
+!
+interface Port-channel1
+ description L3 EtherChannel to L3SW1
+ no switchport
+ ip address 10.255.255.2 255.255.255.252
+ no shutdown
+!
+! Gi1/0/1 unused on L3SW2 (edge link is on L3SW1)
+!
+! ----- SVIs + HSRP + DHCP helpers -----
+interface Vlan10
+ description MANAGEMENT - HSRP Standby
+ ip address 10.10.10.3 255.255.255.0
+ ip helper-address 10.10.255.1
+ standby 10 ip 10.10.10.1
+ standby 10 priority 100
+ standby 10 preempt
+ no shutdown
+!
+interface Vlan20
+ description FINANCE - HSRP Standby
+ ip address 10.10.20.3 255.255.255.0
+ ip helper-address 10.10.255.1
+ standby 20 ip 10.10.20.1
+ standby 20 priority 100
+ standby 20 preempt
+ no shutdown
+!
+interface Vlan30
+ description HR - HSRP Standby
+ ip address 10.10.30.3 255.255.255.0
+ ip helper-address 10.10.255.1
+ standby 30 ip 10.10.30.1
+ standby 30 priority 100
+ standby 30 preempt
+ no shutdown
+!
+interface Vlan40
+ description IT - HSRP Standby
+ ip address 10.10.40.3 255.255.255.0
+ ip helper-address 10.10.255.1
+ standby 40 ip 10.10.40.1
+ standby 40 priority 100
+ standby 40 preempt
+ no shutdown
+!
+interface Vlan50
+ description TELLERS - HSRP Standby
+ ip address 10.10.50.3 255.255.255.0
+ ip helper-address 10.10.255.1
+ standby 50 ip 10.10.50.1
+ standby 50 priority 100
+ standby 50 preempt
+ no shutdown
+!
+interface Vlan60
+ description CUSTOMER_SERVICE - HSRP Standby
+ ip address 10.10.60.3 255.255.255.0
+ ip helper-address 10.10.255.1
+ standby 60 ip 10.10.60.1
+ standby 60 priority 100
+ standby 60 preempt
+ no shutdown
+!
+interface Vlan70
+ description LOANS - HSRP Standby
+ ip address 10.10.70.3 255.255.255.0
+ ip helper-address 10.10.255.1
+ standby 70 ip 10.10.70.1
+ standby 70 priority 100
+ standby 70 preempt
+ no shutdown
+!
+interface Vlan80
+ description SECURITY - HSRP Standby
+ ip address 10.10.80.3 255.255.255.0
+ ip helper-address 10.10.255.1
+ standby 80 ip 10.10.80.1
+ standby 80 priority 100
+ standby 80 preempt
+ no shutdown
+!
+interface Vlan90
+ description STORAGE_SERVERS - HSRP Standby
+ ip address 10.10.90.3 255.255.255.0
+ ip helper-address 10.10.255.1
+ standby 90 ip 10.10.90.1
+ standby 90 priority 100
+ standby 90 preempt
+ no shutdown
+!
+interface Vlan100
+ description GUEST - HSRP Standby
+ ip address 10.10.100.3 255.255.255.0
+ ip helper-address 10.10.255.1
+ standby 100 ip 10.10.100.1
+ standby 100 priority 100
+ standby 100 preempt
+ no shutdown
+!
+! VLAN 99 = native only: no SVI, no HSRP, no helper
+!
+! Outside / HQ + DHCP relay: default via L3SW1 Po1
+! (10.10.255.1 is not connected on L3SW2)
+ip route 0.0.0.0 0.0.0.0 10.255.255.1
+end
+write memory

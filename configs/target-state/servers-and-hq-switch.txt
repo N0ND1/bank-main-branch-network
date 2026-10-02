@@ -1,0 +1,25 @@
+! Server0 (HQ), Switch0 (HQ), branch DNS server - GUI settings - Bank Main Branch (Cisco Packet Tracer lab)
+! Source: Network Design Master Document Rev 1.0 (30 Sep 2026), Appendix A - TARGET STATE,
+! not a running-config export. Lines marked VERIFY use port IDs not confirmed in a live extract.
+! Built by: Innocent (Nkosiyethu) Mbatha - HSRP, DHCP, static routing, DNS
+!
+! ===== Server0 (HQ, Server-PT) - GUI =====
+! Desktop > IP Configuration (Static)
+!   IPv4 ......... 172.16.10.10
+!   Mask ......... 255.255.255.0
+!   Gateway ...... 172.16.10.1 (VERIFY)
+!   DNS .......... 10.10.90.10
+! Services > HTTP: On
+!
+! ===== Switch0 (HQ, 2960-24TT) =====
+! L2 only, all ports VLAN 1 (factory default)
+!
+! ===== DNS server (branch, Server-PT) - GUI =====
+! Desktop > IP Configuration (Static)
+!   IPv4 ......... 10.10.90.10
+!   Mask ......... 255.255.255.0
+!   Gateway ...... 10.10.90.1 (HSRP VIP)
+!   DNS .......... 10.10.90.10
+! Services > DNS: On (records in 8.4)
+! Access port in VLAN 90; .10 is inside the
+! VLAN 90 DHCP exclusion (.1-.49)

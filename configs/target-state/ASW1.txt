@@ -1,0 +1,65 @@
+! ASW1 (2960-24TT) - access - Bank Main Branch (Cisco Packet Tracer lab)
+! Source: Network Design Master Document Rev 1.0 (30 Sep 2026), Appendix A - TARGET STATE,
+! not a running-config export. Lines marked VERIFY use port IDs not confirmed in a live extract.
+! Built by: Nondumiso Mbuyazi - VLANs, access ports, trunks, PortFast/BPDU Guard
+!
+! ===== ASW1 - IDF A - 2960-24TT =====
+enable
+configure terminal
+hostname ASW1
+!
+vlan 10
+ name MANAGEMENT
+vlan 20
+ name FINANCE
+vlan 30
+ name HR
+vlan 40
+ name IT
+vlan 50
+ name TELLERS
+vlan 60
+ name CUSTOMER_SERVICE
+vlan 70
+ name LOANS
+vlan 80
+ name SECURITY
+vlan 90
+ name STORAGE_SERVERS
+vlan 99
+ name NATIVE
+vlan 100
+ name GUEST
+!
+interface range fa0/1 - 3
+ switchport mode access
+ switchport access vlan 20
+!
+interface range fa0/4 - 5
+ switchport mode access
+ switchport access vlan 30
+!
+interface range fa0/6 - 9
+ switchport mode access
+ switchport access vlan 40
+!
+interface range fa0/15 - 17
+ switchport mode access
+ switchport access vlan 60
+!
+! PortFast + BPDU Guard: end-device ports only
+interface range fa0/1 - 20
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+! Uplinks: Gi0/1 -> L3SW1 Gi1/0/3, Gi0/2 -> L3SW2 Gi1/0/3
+interface range gi0/1 - 2
+ description UPLINK to L3SW1 / L3SW2
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,30,40,50,60,70,80,90,99,100
+ switchport nonegotiate
+ no shutdown
+!
+end
+write memory

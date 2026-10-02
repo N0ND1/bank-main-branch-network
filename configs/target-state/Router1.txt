@@ -1,0 +1,30 @@
+! Router1 (3650, canvas label 'Multilayer Switch2') - Bank Main Branch (Cisco Packet Tracer lab)
+! Source: Network Design Master Document Rev 1.0 (30 Sep 2026), Appendix A - TARGET STATE,
+! not a running-config export. Lines marked VERIFY use port IDs not confirmed in a live extract.
+! Built by: Innocent (Nkosiyethu) Mbatha - HSRP, DHCP, static routing, DNS
+!
+! ===== Router1 = "Multilayer Switch2" =====
+! 3650-24PS used as a routed hop (per canvas)
+enable
+configure terminal
+hostname Router1
+ip routing
+!
+! VERIFY port ID (canvas: to Router0)
+interface GigabitEthernet1/0/1
+ description to Router0 (10.10.255.4/30)
+ no switchport
+ ip address 10.10.255.6 255.255.255.252
+ no shutdown
+!
+! VERIFY port ID (canvas: to Bank-Edge)
+interface GigabitEthernet1/0/2
+ description to Bank-Edge (10.255.1.0/30)
+ no switchport
+ ip address 10.255.1.1 255.255.255.252
+ no shutdown
+!
+ip route 172.16.10.0 255.255.255.0 10.255.1.2
+ip route 10.10.0.0 255.255.0.0 10.10.255.5
+end
+write memory

@@ -1,0 +1,26 @@
+! Bank-Edge (ISR4331) - Bank Main Branch (Cisco Packet Tracer lab)
+! Source: Network Design Master Document Rev 1.0 (30 Sep 2026), Appendix A - TARGET STATE,
+! not a running-config export. Lines marked VERIFY use port IDs not confirmed in a live extract.
+! Built by: Innocent (Nkosiyethu) Mbatha - HSRP, DHCP, static routing, DNS
+!
+! ===== Bank-Edge (ISR4331) - WAN edge =====
+enable
+configure terminal
+hostname Bank-Edge
+!
+! VERIFY port ID
+interface GigabitEthernet0/0/0
+ description to Router1 (10.255.1.0/30)
+ ip address 10.255.1.2 255.255.255.252
+ no shutdown
+!
+! VERIFY port ID
+interface GigabitEthernet0/0/1
+ description to ISP (10.255.2.0/30)
+ ip address 10.255.2.1 255.255.255.252
+ no shutdown
+!
+ip route 172.16.10.0 255.255.255.0 10.255.2.2
+ip route 10.10.0.0 255.255.0.0 10.255.1.1
+end
+write memory

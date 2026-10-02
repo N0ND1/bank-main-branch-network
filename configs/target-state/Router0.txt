@@ -1,0 +1,96 @@
+! Router0 (ISR4331) - campus edge + DHCP server - Bank Main Branch (Cisco Packet Tracer lab)
+! Source: Network Design Master Document Rev 1.0 (30 Sep 2026), Appendix A - TARGET STATE,
+! not a running-config export. Lines marked VERIFY use port IDs not confirmed in a live extract.
+! Built by: Innocent (Nkosiyethu) Mbatha - HSRP, DHCP, static routing, DNS
+!
+! ===== Router0 (ISR4331) - campus edge + DHCP server =====
+enable
+configure terminal
+hostname Router0
+!
+interface GigabitEthernet0/0/1
+ description EDGE to L3SW1 Gi1/0/1 (10.10.255.0/30)
+ ip address 10.10.255.1 255.255.255.252
+ no shutdown
+!
+! VERIFY port ID (canvas: Router0 - Multilayer Switch2)
+interface GigabitEthernet0/0/0
+ description to Router1 (10.10.255.4/30)
+ ip address 10.10.255.5 255.255.255.252
+ no shutdown
+!
+! Return to all bank VLANs via L3SW1
+ip route 10.10.0.0 255.255.0.0 10.10.255.2
+! Outbound to HQ LAN via Router1
+ip route 172.16.10.0 255.255.255.0 10.10.255.6
+! Return for L3SW2-sourced traffic (Po1 is outside 10.10.0.0/16)
+ip route 10.255.255.0 255.255.255.252 10.10.255.2
+!
+! ===== Router0 - DHCP server =====
+service dhcp
+! Exclusions: .1 VIP, .2/.3 Dist, infra to .10
+! VLAN 90: .1-.49 static servers
+ip dhcp excluded-address 10.10.10.1 10.10.10.10
+ip dhcp excluded-address 10.10.20.1 10.10.20.10
+ip dhcp excluded-address 10.10.30.1 10.10.30.10
+ip dhcp excluded-address 10.10.40.1 10.10.40.10
+ip dhcp excluded-address 10.10.50.1 10.10.50.10
+ip dhcp excluded-address 10.10.60.1 10.10.60.10
+ip dhcp excluded-address 10.10.70.1 10.10.70.10
+ip dhcp excluded-address 10.10.80.1 10.10.80.10
+ip dhcp excluded-address 10.10.90.1 10.10.90.49
+ip dhcp excluded-address 10.10.100.1 10.10.100.10
+!
+ip dhcp pool VLAN10_MGMT
+ network 10.10.10.0 255.255.255.0
+ default-router 10.10.10.1
+ dns-server 10.10.90.10 8.8.8.8
+!
+ip dhcp pool VLAN20_FINANCE
+ network 10.10.20.0 255.255.255.0
+ default-router 10.10.20.1
+ dns-server 10.10.90.10 8.8.8.8
+!
+ip dhcp pool VLAN30_HR
+ network 10.10.30.0 255.255.255.0
+ default-router 10.10.30.1
+ dns-server 10.10.90.10 8.8.8.8
+!
+ip dhcp pool VLAN40_IT
+ network 10.10.40.0 255.255.255.0
+ default-router 10.10.40.1
+ dns-server 10.10.90.10 8.8.8.8
+!
+ip dhcp pool VLAN50_TELLERS
+ network 10.10.50.0 255.255.255.0
+ default-router 10.10.50.1
+ dns-server 10.10.90.10 8.8.8.8
+!
+ip dhcp pool VLAN60_CUSTSVC
+ network 10.10.60.0 255.255.255.0
+ default-router 10.10.60.1
+ dns-server 10.10.90.10 8.8.8.8
+!
+ip dhcp pool VLAN70_LOANS
+ network 10.10.70.0 255.255.255.0
+ default-router 10.10.70.1
+ dns-server 10.10.90.10 8.8.8.8
+!
+ip dhcp pool VLAN80_SECURITY
+ network 10.10.80.0 255.255.255.0
+ default-router 10.10.80.1
+ dns-server 10.10.90.10 8.8.8.8
+!
+ip dhcp pool VLAN90_SERVERS
+ network 10.10.90.0 255.255.255.0
+ default-router 10.10.90.1
+ dns-server 10.10.90.10 8.8.8.8
+!
+ip dhcp pool VLAN100_WIFI
+ network 10.10.100.0 255.255.255.0
+ default-router 10.10.100.1
+ dns-server 10.10.90.10 8.8.8.8
+!
+! No pool for VLAN 99 (native only)
+end
+write memory

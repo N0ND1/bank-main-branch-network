@@ -1,0 +1,28 @@
+! HQ-Edge (ISR4331) - Bank Main Branch (Cisco Packet Tracer lab)
+! Source: Network Design Master Document Rev 1.0 (30 Sep 2026), Appendix A - TARGET STATE,
+! not a running-config export. Lines marked VERIFY use port IDs not confirmed in a live extract.
+! Built by: Innocent (Nkosiyethu) Mbatha - HSRP, DHCP, static routing, DNS
+!
+! ===== HQ Edge (ISR4331) - Head-Quarters =====
+enable
+configure terminal
+hostname HQ-Edge
+!
+! VERIFY port ID
+interface GigabitEthernet0/0/0
+ description to ISP (10.255.3.0/30)
+ ip address 10.255.3.2 255.255.255.252
+ no shutdown
+!
+! VERIFY port ID and LAN GW (not on canvas)
+interface GigabitEthernet0/0/1
+ description HQ LAN via Switch0 (172.16.10.0/24)
+ ip address 172.16.10.1 255.255.255.0
+ no shutdown
+!
+! Return to the bank branch
+ip route 10.10.0.0 255.255.0.0 10.255.3.1
+! Default toward ISP (hq-fix note)
+ip route 0.0.0.0 0.0.0.0 10.255.3.1
+end
+write memory

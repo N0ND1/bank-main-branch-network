@@ -1,0 +1,26 @@
+! ISP (ISR4331, lab provider transit) - Bank Main Branch (Cisco Packet Tracer lab)
+! Source: Network Design Master Document Rev 1.0 (30 Sep 2026), Appendix A - TARGET STATE,
+! not a running-config export. Lines marked VERIFY use port IDs not confirmed in a live extract.
+! Built by: Innocent (Nkosiyethu) Mbatha - HSRP, DHCP, static routing, DNS
+!
+! ===== ISP (ISR4331) - provider transit =====
+enable
+configure terminal
+hostname ISP
+!
+! VERIFY port ID
+interface GigabitEthernet0/0/0
+ description to Bank-Edge (10.255.2.0/30)
+ ip address 10.255.2.2 255.255.255.252
+ no shutdown
+!
+! VERIFY port ID
+interface GigabitEthernet0/0/1
+ description to HQ-Edge (10.255.3.0/30)
+ ip address 10.255.3.1 255.255.255.252
+ no shutdown
+!
+ip route 172.16.10.0 255.255.255.0 10.255.3.2
+ip route 10.10.0.0 255.255.0.0 10.255.2.1
+end
+write memory

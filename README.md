@@ -2,11 +2,13 @@
 
 A three-tier bank branch campus designed and built in Cisco Packet Tracer by two people, split by layer: six access switches in three IDFs, a redundant distribution pair with HSRP, a single DHCP server on the edge router, and static routing out to a Head-Quarters web server.
 
+> **Nondumiso's copy of a joint project.** I built the Layer 2 side and the switching on the Layer 3 side: the VLANs, access ports, trunks, SVIs, the Po1 EtherChannel and the floor-plan mapping ([LESSON-02](troubleshooting/LESSON-02-vlans-follow-the-floor-plan.md), [my command book](docs/L2-L3-Command-Book_Nondumiso-Mbuyazi.pdf)). The shared original is at [Nkosiyethu95/bank-main-branch-network](https://github.com/Nkosiyethu95/bank-main-branch-network).
+
 > **This is a home-lab project.** Every device lives in Packet Tracer. The INC/TKT numbers are lab and NOC-drill tickets from a simulated bank, not incidents at a real employer.
 
 | | |
 |---|---|
-| **Built by** | [Innocent (Nkosiyethu) Mbatha](https://www.linkedin.com/in/innocent-mbatha-366446247/) (Layer 3 & 7) and Nondumiso Mbuyazi (Layer 2 & 3) |
+| **Built by** | [Nondumiso Mbuyazi](https://github.com/N0ND1) (Layer 2 & 3) and [Innocent (Nkosiyethu) Mbatha](https://github.com/Nkosiyethu95) (Layer 3 & 7) |
 | **Tool** | Cisco Packet Tracer |
 | **Design revision** | Master Document Rev 1.0, 30 Sep 2026 ([PDF, 27 pages](docs/Bank_Main_Branch_Network_Design_Master.pdf)) |
 | **Status** | Design locked. Two incidents resolved. Failover and HQ-path tests still to run (see [Roadmap](#roadmap)). |
@@ -175,7 +177,7 @@ Two lab incidents, each worked fault → diagnose → fix → verify. Full write
 ### INC-2101: Finance VLAN 20 lost its gateway (HSRP)
 
 **Fault:** Finance PCs showed Limited/No connectivity. HR (VLAN 30) next door was fine, so it wasn't a campus-wide outage.
-**Diagnose:** I compared a broken Finance host with a working HR host, then checked the distribution layer first (SVI, `show standby brief`, VIP) instead of changing access ports. HSRP group 20 was stuck in Init: both switches had priority 110, and the VLAN 20 hellos weren't reaching the peer over the trunks.
+**Diagnose:** Innocent compared a broken Finance host with a working HR host, then checked the distribution layer first (SVI, `show standby brief`, VIP) instead of changing access ports. HSRP group 20 was stuck in Init: both switches had priority 110, and the VLAN 20 hellos weren't reaching the peer over the trunks.
 **Fix:** L3SW1 .2, priority 110, preempt (Active). L3SW2 .3, priority 100, preempt (Standby). VIP 10.10.20.1. Trunks carrying VLAN 20 restored.
 **Verify:** `show standby brief` Active/Standby on both; Finance PC pings 10.10.20.1; HR still healthy.
 → [INC-2101 write-up](troubleshooting/INC-2101-finance-vlan20-hsrp.md) · [L3SW1 capture](screenshots/01-L3SW1-hsrp-svis-2026-09-16.webp)
@@ -271,11 +273,11 @@ The `.pkt` opens in Cisco Packet Tracer 8.x. It's the 18 Sep 2026 live file, so 
 
 | Who | Layer | What they built |
 |---|---|---|
-| **Nondumiso Mbuyazi** | Layer 2 & 3 | VLAN database on all eight switches, access ports, 12 dual-homed 802.1Q trunks (native 99), PortFast + BPDU Guard, **the SVIs on the distribution pair**, **the routed L3 EtherChannel Po1 (LACP)**, VLAN colour scheme and floor-plan integration. Her [command book](docs/L2-L3-Command-Book_Nondumiso-Mbuyazi.pdf). |
-| **Innocent (Nkosiyethu) Mbatha** | Layer 3 & 7 | **HSRP** gateways for the 10 user VLANs (VLAN 60 fix still open), **DHCP on Router0** with relays, **static routing** inside the branch and to HQ, **DNS**. Incident write-ups and the test plan. |
+| **Nondumiso Mbuyazi** | Layer 2 & 3 | VLAN database on all eight switches, access ports, 12 dual-homed 802.1Q trunks (native 99), PortFast + BPDU Guard, **the SVIs on the distribution pair**, **the routed L3 EtherChannel Po1 (LACP)**, VLAN colour scheme and floor-plan integration. My [command book](docs/L2-L3-Command-Book_Nondumiso-Mbuyazi.pdf). |
+| **Innocent (Nkosiyethu) Mbatha** ([GitHub](https://github.com/Nkosiyethu95)) | Layer 3 & 7 | **HSRP** gateways for the 10 user VLANs (VLAN 60 fix still open), **DHCP on Router0** with relays, **static routing** inside the branch and to HQ, **DNS**. Incident write-ups and the test plan. |
 
 Built with Cisco Packet Tracer. Device names and the "bank" are fictional.
 
 ---
 
-**About me:** I'm Innocent (Nkosiyethu) Mbatha, a career-changer into IT based in Mbombela, South Africa. CCNA candidate, Linux Essentials held. I'm looking for helpdesk, network technician and junior NOC roles. [LinkedIn](https://www.linkedin.com/in/innocent-mbatha-366446247/) · [GitHub](https://github.com/Nkosiyethu95)
+**About me:** I'm Nondumiso Mbuyazi. On this project I built the Layer 2 and switching side of the network, and mapped each department's VLAN to the closet that serves its part of the floor plan. [GitHub](https://github.com/N0ND1)

@@ -73,6 +73,8 @@ One VLAN and one /24 per department. VLAN 99 is the trunk native VLAN only (no S
 | 100 | GUEST | 10.10.100.0/24 | 10.10.100.1 | .2 | .3 | VLAN100_WIFI |
 | 99 | NATIVE | trunk native only | – | – | – | none |
 
+Lesson learned: we first had every VLAN on every access switch, with departments scattered across them. We remapped the access layer so each department's VLAN sits on the switches in the IDF that serves its area of the floor plan. ([write-up](troubleshooting/LESSON-02-vlans-follow-the-floor-plan.md))
+
 Point-to-point links:
 
 | Link | Subnet | Side A | Side B |
@@ -256,7 +258,7 @@ Tests that are planned but **not done yet**. No results are claimed for any of t
 │   └── test-plan.md
 ├── diagrams/                  # logical topology, PT canvas, floor plan, DHCP path
 ├── screenshots/               # live CLI captures, 16 Sep 2026
-├── troubleshooting/           # INC-2101, TKT-2104, lesson learned, open tickets
+├── troubleshooting/           # INC-2101, TKT-2104, lessons learned, open tickets
 └── packet-tracer/
     └── bank-main-branch_2026-09-18.pkt
 ```

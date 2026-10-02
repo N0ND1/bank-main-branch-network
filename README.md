@@ -2,13 +2,14 @@
 
 A three-tier bank branch campus designed and built in Cisco Packet Tracer by two people, split by layer: six access switches in three IDFs, a redundant distribution pair with HSRP, a single DHCP server on the edge router, and static routing out to a Head-Quarters web server.
 
-> **Nondumiso's copy of a joint project.** I built the Layer 2 side and the switching on the Layer 3 side: the VLANs, access ports, trunks, SVIs, the Po1 EtherChannel and the floor-plan mapping ([LESSON-02](troubleshooting/LESSON-02-vlans-follow-the-floor-plan.md), [my command book](docs/L2-L3-Command-Book_Nondumiso-Mbuyazi.pdf)). The shared original is at [Nkosiyethu95/bank-main-branch-network](https://github.com/Nkosiyethu95/bank-main-branch-network).
+> **Project owner: Nondumiso Mbuyazi.** I lead this project and built the Layer 2 side and the switching on the Layer 3 side: the VLANs, access ports, trunks, SVIs, the Po1 EtherChannel and the floor-plan mapping ([LESSON-02](troubleshooting/LESSON-02-vlans-follow-the-floor-plan.md), [my command book](docs/L2-L3-Command-Book_Nondumiso-Mbuyazi.pdf)). Innocent (Nkosiyethu) Mbatha built the Layer 3 and 7 services (HSRP, DHCP, routing, DNS) and keeps a copy at [Nkosiyethu95/bank-main-branch-network](https://github.com/Nkosiyethu95/bank-main-branch-network).
 
 > **This is a home-lab project.** Every device lives in Packet Tracer. The INC/TKT numbers are lab and NOC-drill tickets from a simulated bank, not incidents at a real employer.
 
 | | |
 |---|---|
-| **Built by** | [Nondumiso Mbuyazi](https://github.com/N0ND1) (Layer 2 & 3) and [Innocent (Nkosiyethu) Mbatha](https://github.com/Nkosiyethu95) (Layer 3 & 7) |
+| **Project owner** | [Nondumiso Mbuyazi](https://github.com/N0ND1) (Layer 2 & 3) |
+| **Built with** | [Innocent (Nkosiyethu) Mbatha](https://github.com/Nkosiyethu95) (Layer 3 & 7) |
 | **Tool** | Cisco Packet Tracer |
 | **Design revision** | Master Document Rev 1.0, 30 Sep 2026 ([PDF, 27 pages](docs/Bank_Main_Branch_Network_Design_Master.pdf)) |
 | **Status** | Design locked. Two incidents resolved. Failover and HQ-path tests still to run (see [Roadmap](#roadmap)). |
@@ -280,4 +281,4 @@ Built with Cisco Packet Tracer. Device names and the "bank" are fictional.
 
 ---
 
-**About me:** I'm Nondumiso Mbuyazi. On this project I built the Layer 2 and switching side of the network, and mapped each department's VLAN to the closet that serves its part of the floor plan. [GitHub](https://github.com/N0ND1)
+**About me:** I'm Nondumiso Mbuyazi, owner of this project. I built the Layer 2 and switching side of the network, and mapped each department's VLAN to the closet that serves its part of the floor plan. [GitHub](https://github.com/N0ND1)
